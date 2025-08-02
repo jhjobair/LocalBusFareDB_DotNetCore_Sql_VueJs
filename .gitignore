@@ -16,6 +16,7 @@ out/
 *.suo
 *.userosscache
 *.sln.docstates
+.vs/
 .vscode/
 *.ncrunchproject
 
