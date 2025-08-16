@@ -41,7 +41,7 @@ var builder = WebApplication.CreateBuilder(args);
     });
 
     // Application services
-    services.AddScoped<IUserService, UserService>();
+    services.AddApplicationServices();
 }
 
 var app = builder.Build();

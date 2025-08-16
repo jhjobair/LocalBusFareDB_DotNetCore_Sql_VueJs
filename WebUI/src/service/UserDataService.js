@@ -1,26 +1,26 @@
 import axios from 'axios'
 
-const USER_API_URL = 'http://localhost:9080/api/v1'
+const API_URL = 'http://localhost:9080/api/v1'
 
 class UserDataService {
 
     retrieveAllUsers() {
-        return axios.get(`${USER_API_URL}/users`);
+        return axios.get(`${API_URL}/users`);
     }
 
     retrieveUser(id) {
-        return axios.get(`${USER_API_URL}/users/${id}`);
+        return axios.get(`${API_URL}/users/${id}`);
     }
 
     deleteUser(id) {
-        return axios.delete(`${USER_API_URL}/users/${id}`);
+        return axios.delete(`${API_URL}/users/${id}`);
     }
 
     updateUser(id, user) {
-        return axios.put(`${USER_API_URL}/users/${id}`, user);
+        return axios.put(`${API_URL}/users/${id}`, user);
     }
     createUser(user) {
-        return axios.post(`${USER_API_URL}/users`, user);
+        return axios.post(`${API_URL}/users`, user);
     }
   }
 export default new UserDataService()
