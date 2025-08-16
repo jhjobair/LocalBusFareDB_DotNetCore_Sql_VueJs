@@ -37,15 +37,33 @@ public class StationsController : ControllerBase
     [HttpPost]
     public IActionResult Create(Stations model)
     {
-        _stationsService.Create(model);
+       string res = _stationsService.Create(model);
+        if (res.Length!=0)
+        {
+            return BadRequest(new { message = res });
+        }
         return Ok(new { message = "Stations created" });
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, Stations model)
     {
-        _stationsService.Update(id, model);
-        return Ok(new { message = "Stations updated" });
+        try
+        {
+
+            string res = _stationsService.Update(id, model);
+            if (res.Length != 0)
+            {
+                return BadRequest(new { message = res });
+            }
+            return Ok(new { message = "Stations updated" });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+       
     }
 
     [HttpDelete("{id}")]

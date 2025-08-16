@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import UserDataService from "../service/UserDataService";
+import UserDataService from "../../service/UserDataService";
 
 export default {
   name: "User",

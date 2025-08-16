@@ -7,8 +7,8 @@ public interface IStationsService
 {
     IEnumerable<Stations> GetAll();
     Stations GetById(int id);
-    void Create(Stations model);
-    void Update(int id, Stations model);
-    void Delete(int id);
+    string Create(Stations model);
+    string Update(int id, Stations model);
+    string Delete(int id);
 }
 
