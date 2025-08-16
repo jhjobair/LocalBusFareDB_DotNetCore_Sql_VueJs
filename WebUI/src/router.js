@@ -4,22 +4,22 @@ const routes =  [
     {
         path: "/Users",
         name: "Users",
-        component: () => import("./components/Users"),
+        component: () => import("./components/User/Users"),
     },
     {
         path: "/user/:id",
         name: "User",
-        component: () => import("./components/User"),
+        component: () => import("./components/User/User"),
     },
     {
         path: "/",
         name: "Stations",
-        component: () => import("./components/Stations"),
+        component: () => import("./components/Stations/Stations"),
     },
     {
         path: "/station/:id",
         name: "Station",
-        component: () => import("./components/Station"),
+        component: () => import("./components/Stations/Station"),
     },
 ];
  

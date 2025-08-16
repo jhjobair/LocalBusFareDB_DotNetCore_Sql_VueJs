@@ -27,4 +27,7 @@ public class DataContext : DbContext
 
     public DbSet<User> Users { get; set; } // example entity
     public DbSet<Stations> Stations { get; set; } // example entity
+    public DbSet<ChartInfo> ChartInfo { get; set; } // example entity
+    public DbSet<FareChart> FareChart { get; set; } // example entity
+
 }

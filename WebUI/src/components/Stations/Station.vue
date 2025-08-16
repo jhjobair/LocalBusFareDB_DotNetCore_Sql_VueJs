@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import StationsDataService from "../service/StationsDataService";
+import StationsDataService from "../../service/StationsDataService";
 
 export default {
   name: "Station",
@@ -63,22 +63,36 @@ export default {
         this.errors.push("Enter atleast 3 characters in station Name BN");
       }
       if (this.errors.length === 0) {
-        if (this.id == -1) {
-          StationsDataService.createStation({
-            stationNameEN: this.stationNameEN,
-            stationNameBN: this.stationNameBN,
-          }).then(() => {
-            this.$router.push("/");
-          }, err => this.errors.push(err.response.data.errors));
-        } else {
-          StationsDataService.updateStation(this.id, {
-            id: this.id,
-            stationNameEN: this.stationNameEN,
-            stationNameBN: this.stationNameBN,
-          }).then(() => {
-            this.$router.push("/");
-          }, err => this.errors.push(err.response.data.errors));
-        }
+       if (this.id == -1) {
+        StationsDataService.createStation({
+          stationNameEN: this.stationNameEN,
+          stationNameBN: this.stationNameBN,
+        }).then(() => {
+          this.$router.push("/");
+        }, err => {
+            console.error("Error Response:", err.response); // full object
+            if (err.response && err.response.data && err.response.data.message) {
+              this.errors.push(err.response.data.message); // custom message from backend
+            } else {
+              this.errors.push("Something went wrong");
+            }
+        });
+      } else {
+        StationsDataService.updateStation(this.id, {
+          id: this.id,
+          stationNameEN: this.stationNameEN,
+          stationNameBN: this.stationNameBN,
+        }).then(() => {
+          this.$router.push("/");
+        }, err => {
+            console.error("Error Response:", err.response); // full object
+            if (err.response && err.response.data && err.response.data.message) {
+              this.errors.push(err.response.data.message); // custom message from backend
+            } else {
+              this.errors.push("Something went wrong");
+          }
+        });
+      }
       }
     },
   },
