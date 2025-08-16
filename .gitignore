@@ -50,7 +50,8 @@ appsettings.Local.json
 publish/
 
 # EF Migrations snapshot
-Migrations/
+Migrations/*
+!Migrations/*.cs
 
 # Backup & temporary files
 *.bak
