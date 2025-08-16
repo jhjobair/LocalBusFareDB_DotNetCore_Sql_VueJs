@@ -26,4 +26,5 @@ public class DataContext : DbContext
     public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
     public DbSet<User> Users { get; set; } // example entity
+    public DbSet<Stations> Stations { get; set; } // example entity
 }
