@@ -49,9 +49,9 @@
       </tbody>
     </table>
 
-    <div class="row">
+   
       <button class="btn btn-success" @click="addStation()">Add</button>
-    </div>
+   
 </div>
 
   </template>
