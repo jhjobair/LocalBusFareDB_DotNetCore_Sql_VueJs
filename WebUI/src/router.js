@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 
 const routes =  [
     {
-        path: "/Users",
+        path: "/",
         name: "Users",
         component: () => import("./components/User/Users"),
     },
@@ -12,7 +12,7 @@ const routes =  [
         component: () => import("./components/User/User"),
     },
     {
-        path: "/",
+        path: "/Stations",
         name: "Stations",
         component: () => import("./components/Stations/Stations"),
     },
@@ -20,6 +20,16 @@ const routes =  [
         path: "/station/:id",
         name: "Station",
         component: () => import("./components/Stations/Station"),
+    },
+    {
+        path: "/ChartAllinfo",
+        name: "ChartAllinfo",
+        component: () => import("./components/ChartInfo/ChartAllinfo"),
+    },
+    {
+        path: "/SingleChartInfo/:id",
+        name: "SingleChartInfo",
+        component: () => import("./components/ChartInfo/SingleChartInfo"),
     },
 ];
  

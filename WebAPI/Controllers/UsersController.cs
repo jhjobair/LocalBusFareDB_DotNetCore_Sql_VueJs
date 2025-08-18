@@ -2,8 +2,8 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Interface;
 using WebApi.Models.Users;
-using WebApi.Services;
 
 [ApiController]
 [Route("api/v1/[controller]")]

@@ -1,4 +1,4 @@
-namespace WebApi.Services;
+namespace WebApi.Interface;
 
 using WebApi.Entities;
 using WebApi.Models.Users;

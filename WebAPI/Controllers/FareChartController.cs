@@ -1,0 +1,31 @@
+﻿namespace WebApi.Controllers;
+
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using WebApi.Entities;
+using WebApi.Interface;
+
+[ApiController]
+[Route("api/v1/[controller]/[action]")]
+public class FareChartController : ControllerBase
+{
+    private IFareChartService _fareChartService;
+    private IMapper _mapper;
+
+    public FareChartController(
+        IFareChartService fareChartService,
+        IMapper mapper)
+    {
+        _fareChartService = fareChartService;
+        _mapper = mapper;
+    }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var data = _fareChartService.GetAll();
+        return Ok(data);
+    }
+
+    
+}

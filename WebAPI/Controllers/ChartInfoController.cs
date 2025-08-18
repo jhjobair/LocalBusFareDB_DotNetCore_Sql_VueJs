@@ -7,51 +7,51 @@ using WebApi.Interface;
 
 [ApiController]
 [Route("api/v1/[controller]/[action]")]
-public class StationsController : ControllerBase
+public class ChartInfoController : ControllerBase
 {
-    private IStationsService _stationsService;
+    private IChartInfoService _chartInfoService;
     private IMapper _mapper;
 
-    public StationsController(
-        IStationsService stationsService,
+    public ChartInfoController(
+        IChartInfoService chartInfoService,
         IMapper mapper)
     {
-        _stationsService = stationsService;
+        _chartInfoService = chartInfoService;
         _mapper = mapper;
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        var stations = _stationsService.GetAll();
-        return Ok(stations);
+        var chartInfo = _chartInfoService.GetAll();
+        return Ok(chartInfo);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
-        var stations = _stationsService.GetById(id);
-        return Ok(stations);
+        var chartInfo = _chartInfoService.GetById(id);
+        return Ok(chartInfo);
     }
 
     [HttpPost]
-    public IActionResult Create(Stations model)
+    public IActionResult Create(ChartInfo model)
     {
-       string res = _stationsService.Create(model);
+       string res = _chartInfoService.Create(model);
         if (res.Length!=0)
         {
             return BadRequest(new { message = res });
         }
-        return Ok(new { message = "Stations created" });
+        return Ok(new { message = "chartInfo created" });
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, Stations model)
+    public IActionResult Update(int id, ChartInfo model)
     {
         try
         {
 
-            string res = _stationsService.Update(id, model);
+            string res = _chartInfoService.Update(id, model);
             if (res.Length != 0)
             {
                 return BadRequest(new { message = res });
@@ -69,7 +69,7 @@ public class StationsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        _stationsService.Delete(id);
-        return Ok(new { message = "Stations deleted" });
+        _chartInfoService.Delete(id);
+        return Ok(new { message = "chartInfo deleted" });
     }
 }
