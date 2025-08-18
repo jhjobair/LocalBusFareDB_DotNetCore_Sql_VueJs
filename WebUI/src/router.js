@@ -31,6 +31,11 @@ const routes =  [
         name: "SingleChartInfo",
         component: () => import("./components/ChartInfo/SingleChartInfo"),
     },
+    {
+        path: "/FareChart",
+        name: "FareChart",
+        component: () => import("./components/FareChart/FareChart"),
+    },
 ];
  
 const router = createRouter({
