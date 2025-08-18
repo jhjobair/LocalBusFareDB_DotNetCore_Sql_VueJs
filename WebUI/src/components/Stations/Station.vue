@@ -39,12 +39,18 @@
             />
           </div>
 
-          <!-- Save Button -->
-          <div class="form-actions">
-            <button class="btn btn-success" type="submit">
-              💾 Save
-            </button>
-          </div>
+            <div class="row">
+              <div class="d-flex justify-content-start col col-2">
+                <button class="btn btn-success px-4" type="submit">
+                  💾 Save
+                </button>
+                </div>
+                <div class="d-flex justify-content-end col col-10">
+                <button class="btn btn-success px-4" type="button" @click="cancelForm">
+                  ❌ Cancel
+                </button>
+                </div>
+            </div>
         </form>
       </div>
     </div>
@@ -77,6 +83,9 @@ export default {
         this.stationNameBN = res.data.stationNameBN;
       });
     },
+        cancelForm() {
+    this.$router.push("/Stations"); 
+  },
     validateAndSubmit(e) {
       e.preventDefault();
       this.errors = [];

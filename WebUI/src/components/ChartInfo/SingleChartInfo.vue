@@ -50,13 +50,20 @@
               placeholder="Enter chart path"
             />
           </div>
-
-          <!-- Save Button -->
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success px-4" type="submit">
-              💾 Save
-            </button>
+        <!-- Save & Cancel Buttons -->
+         <div class="row">
+        <div class="d-flex justify-content-start col col-2">
+          <button class="btn btn-success px-4" type="submit">
+            💾 Save
+          </button>
           </div>
+          <div class="d-flex justify-content-end col col-10">
+          <button class="btn btn-success px-4" type="button" @click="cancelForm">
+            ❌ Cancel
+          </button>
+          </div>
+        </div>
+
 
         </form>
       </div>
@@ -93,6 +100,9 @@ export default {
         this.chartPath = res.data.chartPath;
       });
     },
+    cancelForm() {
+    this.$router.push("/ChartAllinfo"); 
+  },
     validateAndSubmit(e) {
       e.preventDefault();
       this.errors = [];
