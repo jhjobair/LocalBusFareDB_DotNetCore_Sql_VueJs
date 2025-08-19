@@ -1,19 +1,31 @@
 <template>
   <div class="container">
     <h3>All ChartInfo</h3>
+    <div v-if="message" class="alert alert-success">{{ message }}</div>
 
     <!-- Search Box -->
-    <div class="mb-3 d-flex justify-content-end">
-      <input 
-        type="text" 
-        class="form-control" 
-        placeholder="Search by Chart name..." 
-        v-model="searchText" 
-        style="max-width: 300px;"
-      />
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3 d-flex justify-content-start">
+          <button class="btn btn-primary" @click="addChartInfo()">Add</button>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <div class="mb-3 d-flex justify-content-end">
+          <input type="text" class="form-control" placeholder="Search by Chart name..." v-model="searchText"
+            style="max-width: 300px;" />
+        </div>
+      </div>
     </div>
 
-    <div v-if="message" class="alert alert-success">{{ message }}</div>
+
+
+
+
+
+
 
     <table class="table">
       <thead>
@@ -49,7 +61,7 @@
       </tbody>
     </table>
 
-      <button class="btn btn-primary" @click="addChartInfo()">Add</button>
+
   </div>
 </template>
 

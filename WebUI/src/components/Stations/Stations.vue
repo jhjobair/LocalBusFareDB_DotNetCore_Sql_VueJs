@@ -3,17 +3,23 @@
     <h3>All Stations</h3>
 
     <!-- Search Box -->
-    <div class="mb-3 d-flex justify-content-end">
-      <input 
-        type="text" 
-        class="form-control" 
-        placeholder="Search by station name..." 
-        v-model="searchText" 
-        style="max-width: 300px;"
-      />
-    </div>
+
 
     <div v-if="message" class="alert alert-success">{{ message }}</div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3 d-flex justify-content-start">
+          <button class="btn btn-primary" @click="addStation()">Add</button>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3 d-flex justify-content-end">
+           <input  type="text"   class="form-control"   placeholder="Search by station name..."    v-model="searchText"   style="max-width: 300px;"  />
+        </div>
+      </div>
+    </div>
 
     <table class="table">
       <thead>
@@ -50,7 +56,6 @@
     </table>
 
    
-      <button class="btn btn-primary" @click="addStation()">Add</button>
    
 </div>
 
