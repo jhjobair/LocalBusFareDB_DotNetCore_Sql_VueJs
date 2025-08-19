@@ -49,9 +49,7 @@
       </tbody>
     </table>
 
-    <div class="row">
-      <button class="btn btn-success" @click="addChartInfo()">Add</button>
-    </div>
+      <button class="btn btn-primary" @click="addChartInfo()">Add</button>
   </div>
 </template>
 

@@ -24,6 +24,7 @@
           <th>Fare</th>
           <th>Chart Name</th>
           <th>Chart Code</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody>
@@ -34,12 +35,12 @@
           <td>{{ info.fare }}</td>
           <td>{{ info.chartName }}</td>
           <td>{{ info.chartCode }}</td>
-          <!-- <td>
-            <button class="btn btn-warning" @click="updateChartInfo(info.id)">
-              Update
+           <td>
+            <button class="btn btn-warning" @click="FareDetails(info.id)">
+              Details
             </button>
           </td>
-          <td>
+         <!-- <td>
             <button class="btn btn-danger" @click="deleteChartInfo(info.id)">
               Delete
             </button>
@@ -50,7 +51,7 @@
         </tr>
       </tbody>
     </table>
-     <button class="btn btn-success" @click="addChartInfo()">Add</button> 
+     <!-- <button class="btn btn-primary" @click="addChartInfo()">Add</button>  -->
    
   </div>
 </template>
@@ -92,6 +93,9 @@ filteredFareChart() {
       FareChartDataService.retrieveAllFareChart().then((res) => {
         this.fareChart = res.data;
       });
+    },
+        FareDetails(id) {
+      this.$router.push(`/SingleFareChart/${id}`);
     },
     // addChartInfo() {
     //   this.$router.push(`/SingleChartInfo/-1`);

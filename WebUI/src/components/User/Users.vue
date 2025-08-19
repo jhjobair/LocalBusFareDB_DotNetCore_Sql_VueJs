@@ -33,9 +33,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="row">
           <button class="btn btn-success" v-on:click="addUser()">Add</button>
-        </div>
       </div>
     </div>
   </template>

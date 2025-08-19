@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4">
+  <div class="card-container">
     <div class="card custom-card shadow-lg">
       <div class="card-header">
         <h3 class="mb-0">Chart Info</h3>

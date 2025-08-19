@@ -6,7 +6,7 @@ using WebApi.Models.Users;
 public interface IFareChartService
 {
     IEnumerable<FareChartViewModel> GetAll();
-    //ChartInfo GetById(int id);
+    FareChartViewModel GetById(int id);
     //string Create(ChartInfo model);
     //string Update(int id, ChartInfo model);
     //string Delete(int id);

@@ -50,7 +50,7 @@
     </table>
 
    
-      <button class="btn btn-success" @click="addStation()">Add</button>
+      <button class="btn btn-primary" @click="addStation()">Add</button>
    
 </div>
 

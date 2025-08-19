@@ -8,9 +8,9 @@ class FareChartDataService {
         return axios.get(`${API_URL}/FareChart/GetAll`);
     }
 
-    // retrieveChartInfo(id) {
-    //     return axios.get(`${API_URL}/ChartInfo/GetById/${id}`);
-    // }
+    retrieveFareChart(id) {
+        return axios.get(`${API_URL}/FareChart/GetById/${id}`);
+    }
 
     // deleteChartInfo(id) {
     //     return axios.delete(`${API_URL}/ChartInfo/Delete/${id}`);

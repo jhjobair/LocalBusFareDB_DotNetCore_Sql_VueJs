@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Entities;
 using WebApi.Interface;
+using WebApi.Services;
 
 [ApiController]
 [Route("api/v1/[controller]/[action]")]
@@ -26,6 +27,11 @@ public class FareChartController : ControllerBase
         var data = _fareChartService.GetAll();
         return Ok(data);
     }
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        var data = _fareChartService.GetById(id);
+        return Ok(data);
+    }
 
-    
 }

@@ -24,8 +24,19 @@
           <label>Email Id</label>
           <input type="text" class="form-control" v-model="email" />
         </fieldset>
-        <button class="btn btn-success" type="submit">Save</button>
-      </form>
+           <div class="row">
+              <div class="d-flex justify-content-start col col-2">
+                <button class="btn btn-success px-4" type="submit">
+                  💾 Save
+                </button>
+                </div>
+                <div class="d-flex justify-content-end col col-10">
+                <button class="btn btn-success px-4" type="button" @click="cancelForm">
+                  ❌ Cancel
+                </button>
+                </div>
+            </div>      
+          </form>
     </div>
   </div>
 </template>
@@ -55,6 +66,9 @@ export default {
         this.email = res.data.email;
       });
     },
+            cancelForm() {
+    this.$router.push("/"); 
+            },
     validateAndSubmit(e) {
       e.preventDefault();
       this.errors = [];
