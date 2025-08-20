@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Runtime.InteropServices;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Interface;
@@ -70,5 +71,51 @@ namespace WebApi.Services
         //    if (data == null) return null; // throw new KeyNotFoundException("Stations not found");
         //    return data;
         //}
+
+
+
+        public string Create(FareChart model)
+        {
+            // validate (check if either direction already exists)
+            if (_context.FareChart.Any(x =>
+                (x.FromStationId == model.FromStationId && x.ToStationId == model.ToStationId) ||
+                (x.FromStationId == model.ToStationId && x.ToStationId == model.FromStationId)))
+            {
+                return $"Stations with the id '{model.Id}' already exists";
+            }
+
+            var fareCharts = new List<FareChart>();
+
+            // prepare common info
+            model.EntryDate = DateTime.Now;
+            model.EntryBy = "";
+            model.UpdateDate = DateTime.Now;
+            model.UpdateBy = "";
+
+            // add the original record
+            fareCharts.Add(model);
+
+            // add the reverse record
+            var reverseModel = new FareChart
+            {
+                FromStationId = model.ToStationId,
+                ToStationId = model.FromStationId,
+                Fare = model.Fare, // if you have a fare column
+                Distance = model.Distance, // if you have a fare column
+                ChartId= model.ChartId,
+                EntryDate = DateTime.Now,
+                EntryBy = "",
+                UpdateDate = DateTime.Now,
+                UpdateBy = ""
+            };
+
+            fareCharts.Add(reverseModel);
+
+            // save both FareChart records
+            _context.FareChart.AddRange(fareCharts);
+            _context.SaveChanges();
+
+            return "";
+        }
     }
 }

@@ -34,4 +34,15 @@ public class FareChartController : ControllerBase
         return Ok(data);
     }
 
+    [HttpPost]
+    public IActionResult Create(FareChart model)
+    {
+        string res = _fareChartService.Create(model);
+        if (res.Length != 0)
+        {
+            return BadRequest(new { message = res });
+        }
+        return Ok(new { message = "Stations created" });
+    }
+
 }

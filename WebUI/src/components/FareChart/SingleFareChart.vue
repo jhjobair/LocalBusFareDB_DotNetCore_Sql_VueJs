@@ -5,7 +5,7 @@
         <h3 class="mb-0">Fare Chart</h3>
       </div>
       <div class="card-body">
-        <form @submit.prevent="validateAndSubmit">
+        <form @submit="validateAndSubmit">
 
           <!-- Error Messages -->
           <div v-if="errors.length" class="mb-3">
@@ -49,13 +49,13 @@
           <!-- Chart Path -->
           <div class="mb-3">
             <label class="form-label fw-bold">Distance</label>
-            <input type="text" class="form-control" v-model="distance" placeholder="Distance" readonly />
+            <input type="text" class="form-control" v-model="distance" placeholder="Distance"  />
           </div>
 
           <!-- Chart Name -->
           <div class="mb-3">
             <label class="form-label fw-bold">Fare</label>
-            <input type="text" class="form-control" v-model="fare" placeholder="Enter Fare" readonly />
+            <input type="text" class="form-control" v-model="fare" placeholder="Enter Fare"  />
           </div>
 
           <!-- Chart Name -->
@@ -172,59 +172,66 @@ export default {
     // nameWithLang ({name, language}) {
     //   return `${name} — [${language}]`
     // }
-    //   validateAndSubmit(e) {
-    //     e.preventDefault();
-    //     this.errors = [];
-    //     if (!this.chartName) {
-    //       this.errors.push("Enter valid chartName");
-    //     } else if (this.chartName.length < 2) {
-    //       this.errors.push("Enter atleast 2 characters in ChartName");
-    //     }
-    //     if (!this.chartCode) {
-    //       this.errors.push("Enter valid chartCode");
-    //     } else if (this.chartCode.length < 2) {
-    //       this.errors.push("Enter atleast 2 characters in ChartCode");
-    //     }
-    //     if (!this.chartPath) {
-    //       this.errors.push("Enter valid chartPath");
-    //     } else if (this.chartPath.length < 2) {
-    //       this.errors.push("Enter atleast 2 characters in chartPath");
-    //     }
-    //     if (this.errors.length === 0) {
-    //      if (this.id == -1) {
-    //       ChartInfoDataService.createChartInfo({
-    //         chartName: this.chartName,
-    //         chartCode: this.chartCode,
-    //         chartPath: this.chartPath,
-    //       }).then(() => {
-    //         this.$router.push("/ChartAllinfo");
-    //       }, err => {
-    //           console.error("Error Response:", err.response); // full object
-    //           if (err.response && err.response.data && err.response.data.message) {
-    //             this.errors.push(err.response.data.message); // custom message from backend
-    //           } else {
-    //             this.errors.push("Something went wrong");
-    //           }
-    //       });
-    //     } else {
-    //       ChartInfoDataService.updateChartInfo(this.id, {
-    //         id: this.id,
-    //         chartName: this.chartName,
-    //         chartCode: this.chartCode,
-    //          chartPath: this.chartPath,
-    //       }).then(() => {
-    //         this.$router.push("/ChartAllinfo");
-    //       }, err => {
-    //           console.error("Error Response:", err.response); // full object
-    //           if (err.response && err.response.data && err.response.data.message) {
-    //             this.errors.push(err.response.data.message); // custom message from backend
-    //           } else {
-    //             this.errors.push("Something went wrong");
-    //         }
-    //       });
-    //     }
-    //     }
-    //   },
+      validateAndSubmit(e) {
+        e.preventDefault();
+        this.errors = [];
+
+        if (!this.fStation.language) {
+          this.errors.push("Enter Select From Station.");
+        } 
+        if (!this.tStation.language) {
+          this.errors.push("Enter Select To Station.");
+        } 
+        if (!this.chartInfo.language) {
+          this.errors.push("Enter Select Chart Info.");
+        } 
+        if (!this.distance) {
+          this.errors.push("Enter Distance.");
+        } else if (this.distance < 0.1) {
+          this.errors.push("Enter valid distance.");
+        }
+        if (!this.fare) {
+          this.errors.push("Enter fare.");
+        } else if (this.fare < 0.1) {
+          this.errors.push("Enter valid fare.");
+        }
+        if (this.errors.length === 0) {
+         if (this.id == -1) {
+          FareChartDataService.createFareChartInfo({
+            fromStationId:this.fStation.language,
+            toStationId :this.tStation.language,
+            distance: this.distance,
+            fare: this.fare,
+            chartId: this.chartInfo.language
+          }).then(() => {
+            this.$router.push("/FareChart");
+          }, err => {
+              console.error("Error Response:", err.response); // full object
+              if (err.response && err.response.data && err.response.data.message) {
+                this.errors.push(err.response.data.message); // custom message from backend
+              } else {
+                this.errors.push("Something went wrong");
+              }
+          });
+        } else {
+          ChartInfoDataService.updateChartInfo(this.id, {
+            id: this.id,
+            chartName: this.chartName,
+            chartCode: this.chartCode,
+             chartPath: this.chartPath,
+          }).then(() => {
+            this.$router.push("/FareChart");
+          }, err => {
+              console.error("Error Response:", err.response); // full object
+              if (err.response && err.response.data && err.response.data.message) {
+                this.errors.push(err.response.data.message); // custom message from backend
+              } else {
+                this.errors.push("Something went wrong");
+            }
+          });
+        }
+        }
+      },
   },
   created() {
     this.refreshFareInfo();

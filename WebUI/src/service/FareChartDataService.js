@@ -21,8 +21,8 @@ class FareChartDataService {
     // }
 
 
-    // createChartInfo(chartInfo) {
-    //     return axios.post(`${API_URL}/ChartInfo/Create`, chartInfo);
-    // }
+    createFareChartInfo(chartInfo) {
+        return axios.post(`${API_URL}/FareChart/Create`, chartInfo);
+    }
   }
 export default new FareChartDataService()
