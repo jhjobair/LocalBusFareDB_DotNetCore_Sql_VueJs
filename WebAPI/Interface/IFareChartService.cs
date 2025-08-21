@@ -8,7 +8,7 @@ public interface IFareChartService
     IEnumerable<FareChartViewModel> GetAll();
     FareChartViewModel GetById(int id);
     string Create(FareChart model);
-    //string Update(int id, ChartInfo model);
+    string Update(int id, FareChart model);
     string Delete(int id);
 }
 

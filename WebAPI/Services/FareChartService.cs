@@ -88,37 +88,44 @@ namespace WebApi.Services
                 return $"A fare chart between station {model.FromStationId} and {model.ToStationId} already exists.";
             }
 
-            var fareCharts = new List<FareChart>();
-
             // prepare common info
             model.EntryDate = DateTime.Now;
             model.EntryBy = "";
             model.UpdateDate = DateTime.Now;
             model.UpdateBy = "";
 
-            // add the original record
-            fareCharts.Add(model);
-
-            // add the reverse record
-            var reverseModel = new FareChart
-            {
-                FromStationId = model.ToStationId,
-                ToStationId = model.FromStationId,
-                Fare = model.Fare, // if you have a fare column
-                Distance = model.Distance, // if you have a fare column
-                ChartId= model.ChartId,
-                EntryDate = DateTime.Now,
-                EntryBy = "",
-                UpdateDate = DateTime.Now,
-                UpdateBy = ""
-            };
-
-            fareCharts.Add(reverseModel);
-
             // save both FareChart records
-            _context.FareChart.AddRange(fareCharts);
+            _context.FareChart.Add(model);
             _context.SaveChanges();
 
+            return "";
+        }
+        public string Update(int id, FareChart model)
+        {
+            var fareChart = getFareChart(id);
+
+            // validate
+            if (model.Id != fareChart.Id)
+            {
+                return "fareChart with the email '" + model.Id + "' already exists";
+            }
+            if (_context.FareChart.Any(x =>
+                 (x.FromStationId == model.FromStationId && x.ToStationId == model.ToStationId) ||
+                 (x.FromStationId == model.ToStationId && x.ToStationId == model.FromStationId)))
+            {
+                return $"A fare chart between station {model.FromStationId} and {model.ToStationId} already exists.";
+            }
+            fareChart.FromStationId = model.FromStationId;
+            fareChart.ToStationId = model.ToStationId;
+            fareChart.Fare = model.Fare;
+            fareChart.Distance = model.Distance;
+            fareChart.ChartId = model.ChartId;
+            fareChart.UpdateDate = DateTime.Now;
+
+            // copy model to Stations and save
+            //_mapper.Map(model, station);
+            _context.FareChart.Update(fareChart);
+            _context.SaveChanges();
             return "";
         }
         public string Delete(int id)
@@ -131,9 +138,7 @@ namespace WebApi.Services
             }
 
             // Find its reverse (B→A if A→B is selected, or vice versa)
-            var reverseFareChart = _context.FareChart.FirstOrDefault(x =>
-                x.FromStationId == fareChart.ToStationId &&
-                x.ToStationId == fareChart.FromStationId);
+            var reverseFareChart = _context.FareChart.FirstOrDefault(x => x.FromStationId == fareChart.ToStationId);
 
             // Remove both if reverse exists
             if (reverseFareChart != null)

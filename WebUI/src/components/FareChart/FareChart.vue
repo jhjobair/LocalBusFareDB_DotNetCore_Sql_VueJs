@@ -41,8 +41,8 @@
                 <td>{{ info.chartName }}</td>
                 <td>{{ info.chartCode }}</td>
                 <td>
-                    <button class="btn btn-warning" @click="FareDetails(info.id)">
-                        Details
+                    <button class="btn btn-warning" @click="EditFareDetails(info.id)">
+                        Update
                     </button>
                 </td>
                 <td>
@@ -105,7 +105,7 @@ export default {
                 this.fareChart = res.data;
             });
         },
-        FareDetails(id) {
+        EditFareDetails(id) {
             this.$router.push(`/SingleFareChart/${id}`);
         },
         addChartFareInfo() {

@@ -44,6 +44,29 @@ public class FareChartController : ControllerBase
         }
         return Ok(new { message = "Stations created" });
     }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, FareChart model)
+    {
+        try
+        {
+
+            string res = _fareChartService.Update(id, model);
+            if (res.Length != 0)
+            {
+                return BadRequest(new { message = res });
+            }
+            return Ok(new { message = "fare Chart updated" });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+
+    }
+
+
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

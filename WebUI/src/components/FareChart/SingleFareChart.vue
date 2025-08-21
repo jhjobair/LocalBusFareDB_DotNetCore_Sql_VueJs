@@ -114,12 +114,13 @@ export default {
   components: { Multiselect },
   data() {
     return {
-      fromStationName: "",
-      toStationName: "",
+      //id,
+      //fromStationName: "",
+      //toStationName: "",
       distance: "",
       fare: "",
-      chartName: "",
-      chartCode: "",
+      //chartName: "",
+      //chartCode: "",
       errors: [],
 
       fStation: { name: 'Select From Station', language: '' },
@@ -140,12 +141,22 @@ export default {
     
     refreshFareInfo() {
       FareChartDataService.retrieveFareChart(this.id).then((res) => {
-        this.fromStationName = res.data.fromStationName;
-        this.toStationName = res.data.toStationName;
+        this.id=res.data.id;
         this.distance = res.data.distance;
         this.fare = res.data.fare;
-        this.chartName = res.data.chartName;
-        this.chartCode = res.data.chartCode;
+        this.fStation = {
+              name: res.data.fromStationName,
+              language: res.data.fromStationId
+        };
+        this.tStation = {
+               name: res.data.toStationName,
+               language: res.data.toStationId
+        };
+        this.chartInfo = {
+               name: res.data.chartName,
+               language: res.data.chartId,
+               id: res.data.chartCode
+        };
       });
     },
     cancelForm() {
@@ -215,11 +226,13 @@ export default {
               }
           });
         } else {
-          ChartInfoDataService.updateChartInfo(this.id, {
+          FareChartDataService.updateFareChart(this.id, {
             id: this.id,
-            chartName: this.chartName,
-            chartCode: this.chartCode,
-             chartPath: this.chartPath,
+            fromStationId:this.fStation.language,
+            toStationId :this.tStation.language,
+            distance: this.distance,
+            fare: this.fare,
+            chartId: this.chartInfo.language
           }).then(() => {
             this.$router.push("/FareChart");
           }, err => {

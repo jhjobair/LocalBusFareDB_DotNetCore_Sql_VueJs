@@ -35,7 +35,7 @@ namespace WebApi.Services
             {
                 return "Stations with the id '" + model.Id + "' already exists";
             }
-            if (getChartInfo(model.ChartName, model.ChartCode) != null)
+            if (getChartInfo( model.ChartCode) != null)
             {
                 return "Stations with the Name '" + model.ChartName + "' already exists";
             }
@@ -61,13 +61,13 @@ namespace WebApi.Services
             {
                 return "Stations with the email '" + model.Id + "' already exists";
             }
-            if (getChartInfo(model.ChartName,model.ChartCode) != null)
+            if (getChartInfo(model.ChartCode) != null)
             {
                return "Stations with the Name '" + model.ChartName + "' already exists";
             }
 
             chartInfo.ChartName = model.ChartName;
-            chartInfo.ChartName = model.ChartCode;
+            chartInfo.ChartCode = model.ChartCode;
             chartInfo.ChartPath = model.ChartPath;
             chartInfo.UpdateDate = DateTime.Now;
 
@@ -95,9 +95,9 @@ namespace WebApi.Services
             return chartInfo;
         }
 
-        private ChartInfo getChartInfo(string CHname, string CHcode)
+        private ChartInfo getChartInfo( string chartCode)
         {
-            var chartInfo = _context.ChartInfo.Where(e=>e.ChartName== CHname || e.ChartCode == CHcode).FirstOrDefault();
+            var chartInfo = _context.ChartInfo.Where(e=> e.ChartCode == chartCode).FirstOrDefault();
             if (chartInfo == null) return null; // throw new KeyNotFoundException("Stations not found");
             return chartInfo;
         }

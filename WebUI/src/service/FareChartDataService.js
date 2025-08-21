@@ -16,9 +16,9 @@ class FareChartDataService {
         return axios.delete(`${API_URL}/FareChart/Delete/${id}`);
     }
 
-    // updateChartInfo(id, chartInfo) {
-    //     return axios.put(`${API_URL}/ChartInfo/Update/${id}`, chartInfo);
-    // }
+    updateFareChart(id, chartInfo) {
+        return axios.put(`${API_URL}/FareChart/Update/${id}`, chartInfo);
+    }
 
 
     createFareChartInfo(chartInfo) {
