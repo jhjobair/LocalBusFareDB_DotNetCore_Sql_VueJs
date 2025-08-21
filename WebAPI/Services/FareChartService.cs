@@ -144,7 +144,7 @@ namespace WebApi.Services
             _context.FareChart.Remove(fareChart);
             _context.SaveChanges();
 
-            return "";
+            return "Fare Chart Deleted Successfully.";
         }
 
         private FareChart getFareChart(int id)

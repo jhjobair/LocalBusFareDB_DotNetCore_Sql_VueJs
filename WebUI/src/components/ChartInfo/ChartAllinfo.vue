@@ -68,6 +68,7 @@
 <script>
 import ChartInfoDataService from "../../service/ChartInfoDataService";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export default {
   name: "ChartAllinfo",
@@ -106,11 +107,32 @@ export default {
     updateChartInfo(id) {
       this.$router.push(`/SingleChartInfo/${id}`);
     },
-    deleteChartInfo(id) {
-      ChartInfoDataService.deleteChartInfo(id).then(() => {
-        this.refreshChartInfo();
-      });
-    },
+   
+      deleteChartInfo(id) {
+      Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete this ChartInfo?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        ChartInfoDataService.deleteChartInfo(id).then(() => {
+          this.refreshChartInfo();
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "ChartInfo deleted successfully.",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        });
+      }
+    });
+  }
   },
   created() {
     this.refreshChartInfo();

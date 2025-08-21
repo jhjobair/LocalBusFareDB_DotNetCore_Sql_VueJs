@@ -83,7 +83,7 @@ namespace WebApi.Services
             var chartInfo = getChartInfo(id);
             _context.ChartInfo.Remove(chartInfo);
             _context.SaveChanges();
-            return "";
+            return "Chart Info Deleted Successfully.";
         }
 
         // helper methods

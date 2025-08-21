@@ -76,6 +76,7 @@
 
 <script>
 import ChartInfoDataService from "../../service/ChartInfoDataService";
+import Swal from "sweetalert2";
 
 export default {
   name: "SingleChartInfo",
@@ -138,21 +139,49 @@ export default {
             }
         });
       } else {
-        ChartInfoDataService.updateChartInfo(this.id, {
-          id: this.id,
-          chartName: this.chartName,
-          chartCode: this.chartCode,
-           chartPath: this.chartPath,
-        }).then(() => {
-          this.$router.push("/ChartAllinfo");
-        }, err => {
-            console.error("Error Response:", err.response); // full object
-            if (err.response && err.response.data && err.response.data.message) {
-              this.errors.push(err.response.data.message); // custom message from backend
-            } else {
-              this.errors.push("Something went wrong");
-          }
-        });
+        // 🟢 First ask confirmation
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to update this chart info?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 🟢 Call API if user confirmed
+          ChartInfoDataService.updateChartInfo(this.id, {
+            id: this.id,
+            chartName: this.chartName,
+            chartCode: this.chartCode,
+            chartPath: this.chartPath,
+          })
+            .then(() => {
+              Swal.fire({
+                icon: "success",
+                title: "Updated!",
+                text: "Chart info updated successfully.",
+                timer: 2000,
+                showConfirmButton: false,
+              }).then(() => {
+                this.$router.push("/ChartAllinfo"); // redirect
+              });
+            })
+            .catch((err) => {
+              console.error("Error Response:", err.response);
+              let message =
+                err.response && err.response.data && err.response.data.message
+                  ? err.response.data.message
+                  : "Something went wrong";
+              Swal.fire({
+                icon: "error",
+                title: "Update Failed",
+                text: message,
+              });
+            });
+        }
+      });
       }
       }
     },

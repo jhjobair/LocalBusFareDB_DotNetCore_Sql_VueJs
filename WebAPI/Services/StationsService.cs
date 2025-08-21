@@ -82,7 +82,7 @@ namespace WebApi.Services
             var stations = getStations(id);
             _context.Stations.Remove(stations);
             _context.SaveChanges();
-            return "";
+            return "Station Deleted Successfully.";
         }
 
         // helper methods

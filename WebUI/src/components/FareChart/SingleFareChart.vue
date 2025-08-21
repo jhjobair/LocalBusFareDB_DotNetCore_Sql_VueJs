@@ -137,6 +137,7 @@ export default {
     },
   },
   methods: {
+    
     refreshFareInfo() {
       FareChartDataService.retrieveFareChart(this.id).then((res) => {
         this.fromStationName = res.data.fromStationName;
