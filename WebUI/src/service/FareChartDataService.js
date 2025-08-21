@@ -12,9 +12,9 @@ class FareChartDataService {
         return axios.get(`${API_URL}/FareChart/GetById/${id}`);
     }
 
-    // deleteChartInfo(id) {
-    //     return axios.delete(`${API_URL}/ChartInfo/Delete/${id}`);
-    // }
+    deleteFareChart(id) {
+        return axios.delete(`${API_URL}/FareChart/Delete/${id}`);
+    }
 
     // updateChartInfo(id, chartInfo) {
     //     return axios.put(`${API_URL}/ChartInfo/Update/${id}`, chartInfo);

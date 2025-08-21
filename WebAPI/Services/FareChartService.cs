@@ -76,12 +76,16 @@ namespace WebApi.Services
 
         public string Create(FareChart model)
         {
+            if (model.FromStationId == model.ToStationId)
+            {
+                return "From station and To station cannot be the same.";
+            }
             // validate (check if either direction already exists)
             if (_context.FareChart.Any(x =>
                 (x.FromStationId == model.FromStationId && x.ToStationId == model.ToStationId) ||
                 (x.FromStationId == model.ToStationId && x.ToStationId == model.FromStationId)))
             {
-                return $"Stations with the id '{model.Id}' already exists";
+                return $"A fare chart between station {model.FromStationId} and {model.ToStationId} already exists.";
             }
 
             var fareCharts = new List<FareChart>();
@@ -116,6 +120,38 @@ namespace WebApi.Services
             _context.SaveChanges();
 
             return "";
+        }
+        public string Delete(int id)
+        {
+            // Find the record by id
+            var fareChart = _context.FareChart.FirstOrDefault(x => x.Id == id);
+            if (fareChart == null)
+            {
+                return "Fare chart not found.";
+            }
+
+            // Find its reverse (B→A if A→B is selected, or vice versa)
+            var reverseFareChart = _context.FareChart.FirstOrDefault(x =>
+                x.FromStationId == fareChart.ToStationId &&
+                x.ToStationId == fareChart.FromStationId);
+
+            // Remove both if reverse exists
+            if (reverseFareChart != null)
+            {
+                _context.FareChart.Remove(reverseFareChart);
+            }
+
+            _context.FareChart.Remove(fareChart);
+            _context.SaveChanges();
+
+            return "";
+        }
+
+        private FareChart getFareChart(int id)
+        {
+            var fareInfo = _context.FareChart.Find(id);
+            if (fareInfo == null) return null; // throw new KeyNotFoundException("Stations not found");
+            return fareInfo;
         }
     }
 }

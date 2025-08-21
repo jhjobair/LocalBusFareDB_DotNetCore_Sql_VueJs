@@ -9,6 +9,6 @@ public interface IFareChartService
     FareChartViewModel GetById(int id);
     string Create(FareChart model);
     //string Update(int id, ChartInfo model);
-    //string Delete(int id);
+    string Delete(int id);
 }
 

@@ -44,5 +44,10 @@ public class FareChartController : ControllerBase
         }
         return Ok(new { message = "Stations created" });
     }
-
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        _fareChartService.Delete(id);
+        return Ok(new { message = "chartInfo deleted" });
+    }
 }

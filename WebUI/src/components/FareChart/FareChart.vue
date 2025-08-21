@@ -38,7 +38,8 @@
           <th>Fare</th>
           <th>Chart Name</th>
           <th>Chart Code</th>
-          <th>Details</th>
+          <th>Update</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -52,6 +53,11 @@
            <td>
             <button class="btn btn-warning" @click="FareDetails(info.id)">
               Details
+            </button>
+          </td>
+           <td>
+            <button class="btn btn-danger" @click="deleteFareChart(info.id)">
+              Delete
             </button>
           </td>
          <!-- <td>
@@ -117,11 +123,11 @@ filteredFareChart() {
     // updateChartInfo(id) {
     //   this.$router.push(`/SingleChartInfo/${id}`);
     // },
-    // deleteChartInfo(id) {
-    //   ChartInfoDataService.deleteChartInfo(id).then(() => {
-    //     this.refreshChartInfo();
-    //   });
-    // },
+    deleteFareChart(id) {
+      FareChartDataService.deleteFareChart(id).then(() => {
+        this.refreshFareChart();
+      });
+    },
   },
   created() {
     this.refreshFareChart();
