@@ -114,13 +114,8 @@ export default {
   components: { Multiselect },
   data() {
     return {
-      //id,
-      //fromStationName: "",
-      //toStationName: "",
       distance: "",
       fare: "",
-      //chartName: "",
-      //chartCode: "",
       errors: [],
 
       fStation: { name: 'Select From Station', language: '' },
