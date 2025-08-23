@@ -35,7 +35,7 @@ namespace WebApi.Services
             {
                 return "Stations with the id '" + model.Id + "' already exists";
             }
-            if (getChartInfo( model.ChartCode) != null)
+            if (getChartInfo(model.ChartCode, model.ChartName, model.ChartPath) != null)
             {
                 return "Stations with the Name '" + model.ChartName + "' already exists";
             }
@@ -61,9 +61,9 @@ namespace WebApi.Services
             {
                 return "Stations with the email '" + model.Id + "' already exists";
             }
-            if (getChartInfo(model.ChartCode) != null)
+            if (getChartInfo(model.ChartCode,model.ChartName,model.ChartPath) != null)
             {
-               return "Stations with the Name '" + model.ChartName + "' already exists";
+               return "ChartInfo with the Name '" + model.ChartName + "' already exists";
             }
 
             chartInfo.ChartName = model.ChartName;
@@ -91,14 +91,14 @@ namespace WebApi.Services
         private ChartInfo getChartInfo(int id)
         {
             var chartInfo = _context.ChartInfo.Find(id);
-            if (chartInfo == null) return null; // throw new KeyNotFoundException("Stations not found");
+            if (chartInfo == null) return null; 
             return chartInfo;
         }
 
-        private ChartInfo getChartInfo( string chartCode)
+        private ChartInfo getChartInfo( string chartCode,string chartName,string chartpath)
         {
-            var chartInfo = _context.ChartInfo.Where(e=> e.ChartCode == chartCode).FirstOrDefault();
-            if (chartInfo == null) return null; // throw new KeyNotFoundException("Stations not found");
+            var chartInfo = _context.ChartInfo.Where(e=> e.ChartCode == chartCode && e.ChartName==chartName && e.ChartPath==chartpath).FirstOrDefault();
+            if (chartInfo == null) return null; 
             return chartInfo;
         }
     }

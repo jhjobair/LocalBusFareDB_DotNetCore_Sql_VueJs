@@ -20,6 +20,7 @@
           <li><router-link to="/Stations">Stations</router-link></li>
           <li><router-link to="/ChartAllinfo">Chart info</router-link></li>
           <li><router-link to="/farechart">Fare Chart</router-link></li>
+          <li><router-link to="/farechart/final">FinalView</router-link></li>
           <!-- <li><router-link to="/settings">Settings</router-link></li> -->
         </ul>
       </aside>

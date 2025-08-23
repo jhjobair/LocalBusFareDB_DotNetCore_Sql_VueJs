@@ -90,14 +90,14 @@ namespace WebApi.Services
         private Stations getStations(int id)
         {
             var stations = _context.Stations.Find(id);
-            if (stations == null) return null; // throw new KeyNotFoundException("Stations not found");
+            if (stations == null) return null; 
             return stations;
         }
 
         private Stations getStations(string name, string namebn)
         {
-            var stations = _context.Stations.Where(e=>e.StationNameEN==name || e.StationNameBN == namebn).FirstOrDefault();
-            if (stations == null) return null; // throw new KeyNotFoundException("Stations not found");
+            var stations = _context.Stations.Where(e=>e.StationNameEN==name && e.StationNameBN == namebn).FirstOrDefault();
+            if (stations == null) return null; 
             return stations;
         }
 

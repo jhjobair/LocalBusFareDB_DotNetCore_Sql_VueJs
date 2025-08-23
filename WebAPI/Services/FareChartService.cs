@@ -104,6 +104,7 @@ namespace WebApi.Services
         {
             var fareChart = getFareChart(id);
 
+
             // validate
             if (model.Id != fareChart.Id)
             {
@@ -138,13 +139,13 @@ namespace WebApi.Services
             }
 
             // Find its reverse (B→A if A→B is selected, or vice versa)
-            var reverseFareChart = _context.FareChart.FirstOrDefault(x => x.FromStationId == fareChart.ToStationId);
+            //var reverseFareChart = _context.FareChart.FirstOrDefault(x => x.FromStationId == fareChart.ToStationId);
 
             // Remove both if reverse exists
-            if (reverseFareChart != null)
-            {
-                _context.FareChart.Remove(reverseFareChart);
-            }
+            //if (reverseFareChart != null)
+            //{
+            //    _context.FareChart.Remove(reverseFareChart);
+            //}
 
             _context.FareChart.Remove(fareChart);
             _context.SaveChanges();
@@ -158,5 +159,52 @@ namespace WebApi.Services
             if (fareInfo == null) return null; // throw new KeyNotFoundException("Stations not found");
             return fareInfo;
         }
+
+        public FareChartViewModel GetByStations(int fromStationId, int toStationId)
+        {
+            FareChartViewModel finalRes = new FareChartViewModel();
+
+            finalRes = (from fc in _context.FareChart
+                          join fs in _context.Stations on fc.FromStationId equals fs.Id
+                          join ts in _context.Stations on fc.ToStationId equals ts.Id
+                          join ci in _context.ChartInfo on fc.ChartId equals ci.Id
+                          where (fc.FromStationId == fromStationId && fc.ToStationId == toStationId)
+                          select new FareChartViewModel
+                          {
+                              Id = fc.Id,
+                              FromStationName = fs.StationNameEN + " - " + fs.StationNameBN,
+                              ToStationName = ts.StationNameEN + " - " + ts.StationNameBN,
+                              Distance = fc.Distance,
+                              Fare = fc.Fare,
+                              ChartName = ci.ChartName,
+                              ChartCode = ci.ChartCode,
+                              FromStationId = fc.FromStationId,
+                              ToStationId = fc.ToStationId,
+                              ChartId = fc.ChartId
+                          }).FirstOrDefault();
+            if (finalRes==null)
+            {
+                finalRes = (from fc in _context.FareChart
+                            join fs in _context.Stations on fc.FromStationId equals fs.Id
+                            join ts in _context.Stations on fc.ToStationId equals ts.Id
+                            join ci in _context.ChartInfo on fc.ChartId equals ci.Id
+                            where  (fc.FromStationId == toStationId && fc.ToStationId == fromStationId)
+                            select new FareChartViewModel
+                            {
+                                Id = fc.Id,
+                                FromStationName = ts.StationNameEN + " - " + ts.StationNameBN,                                
+                                ToStationName = fs.StationNameEN + " - " + fs.StationNameBN,
+                                Distance = fc.Distance,
+                                Fare = fc.Fare,
+                                ChartName = ci.ChartName,
+                                ChartCode = ci.ChartCode,
+                                FromStationId = fc.FromStationId,
+                                ToStationId = fc.ToStationId,
+                                ChartId = fc.ChartId
+                            }).FirstOrDefault();
+            }
+            return finalRes;
+        }
+
     }
 }

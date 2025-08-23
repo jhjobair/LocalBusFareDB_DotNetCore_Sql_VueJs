@@ -24,5 +24,11 @@ class FareChartDataService {
     createFareChartInfo(chartInfo) {
         return axios.post(`${API_URL}/FareChart/Create`, chartInfo);
     }
+
+    finalView(fromStationId, toStationId) {
+    return axios.get(`${API_URL}/FareChart/GetByStations/getByStations/${fromStationId}/${toStationId}`);
+}
+
+
   }
 export default new FareChartDataService()

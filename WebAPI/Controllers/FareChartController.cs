@@ -73,4 +73,18 @@ public class FareChartController : ControllerBase
         _fareChartService.Delete(id);
         return Ok(new { message = "chartInfo deleted" });
     }
+
+
+    [HttpGet("getByStations/{fromStationId}/{toStationId}")]
+    public IActionResult GetByStations(int fromStationId, int toStationId)
+    {
+        var data = _fareChartService.GetByStations(fromStationId, toStationId);
+        if (data == null)
+        {
+            return NotFound("No fare chart found for selected stations.");
+        }
+        return Ok(data);
+    }
+
+
 }
