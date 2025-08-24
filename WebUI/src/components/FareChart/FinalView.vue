@@ -129,8 +129,8 @@ export default {
     fromStation(newVal) {
       if (newVal) {
         this.$nextTick(() => {
-          const input = this.$refs.toSelect.$el.querySelector("input");
-        if (input) input.focus();
+        //   const input = this.$refs.toSelect.$el.querySelector("input");
+        // if (input) input.focus();
         });
       }
     },
