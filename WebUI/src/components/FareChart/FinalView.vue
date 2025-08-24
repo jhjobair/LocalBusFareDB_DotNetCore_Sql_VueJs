@@ -131,6 +131,7 @@ export default {
         this.$nextTick(() => {
         //   const input = this.$refs.toSelect.$el.querySelector("input");
         // if (input) input.focus();
+         this.fetchFareChart();
         });
       }
     },
