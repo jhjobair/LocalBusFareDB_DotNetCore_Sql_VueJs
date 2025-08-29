@@ -62,7 +62,7 @@ var app = builder.Build();
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Web API v1");
         c.RoutePrefix = string.Empty; // Swagger UI at root URL
     });
-
+    app.UseStaticFiles();
     app.MapControllers();
 }
 

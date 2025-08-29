@@ -34,7 +34,8 @@
             <tr v-for="info in filteredChartInfo" :key="info.id">
                 <td>{{ info.chartName }}</td>
                 <td>{{ info.chartCode }}</td>
-                <td>{{ info.chartPath }}</td>
+                <td> <img v-if="info.chartPath" :src="getImageUrl(info.chartPath)" :alt="info.chartName" class="chart-image-thumbnail" />
+                    <span v-else class="text-muted">No Image</span></td>
                 <td>{{ formatDate(info.updateDate) }}</td>
                 <td>
                     <button class="btn btn-warning" @click="updateChartInfo(info.id)">
@@ -68,6 +69,7 @@ export default {
             chartInfo: [],
             message: "",
             searchText: "",
+            apiBaseUrl: "http://localhost:9080",
         };
     },
     computed: {
@@ -83,6 +85,12 @@ export default {
         },
     },
     methods: {
+        getImageUrl(relativePath) {
+            if (!relativePath) return '';
+            // This combines your base URL and the relative path from the database
+            // Example: "http://localhost:9080" + "/images/charts/3eab8d45....png"
+            return `${this.apiBaseUrl}${relativePath}`;
+        },
         formatDate(date) {
             if (!date) return "";
             return dayjs(date).format("DD-MMM-YYYY hh:mm A");
@@ -99,6 +107,31 @@ export default {
             this.$router.push(`/SingleChartInfo/${id}`);
         },
 
+        // deleteChartInfo(id) {
+        //     Swal.fire({
+        //         title: "Are you sure?",
+        //         text: "Do you want to delete this ChartInfo?",
+        //         icon: "warning",
+        //         showCancelButton: true,
+        //         confirmButtonColor: "#3085d6",
+        //         cancelButtonColor: "#d33",
+        //         confirmButtonText: "Yes, delete it!",
+        //         cancelButtonText: "Cancel"
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             ChartInfoDataService.deleteChartInfo(id).then(() => {
+        //                 this.refreshChartInfo();
+        //                 Swal.fire({
+        //                     icon: "success",
+        //                     title: "Deleted!",
+        //                     text: "ChartInfo deleted successfully.",
+        //                     timer: 2000,
+        //                     showConfirmButton: false
+        //                 });
+        //             });
+        //         }
+        //     });
+        // }
         deleteChartInfo(id) {
             Swal.fire({
                 title: "Are you sure?",
@@ -111,16 +144,41 @@ export default {
                 cancelButtonText: "Cancel"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    ChartInfoDataService.deleteChartInfo(id).then(() => {
-                        this.refreshChartInfo();
-                        Swal.fire({
-                            icon: "success",
-                            title: "Deleted!",
-                            text: "ChartInfo deleted successfully.",
-                            timer: 2000,
-                            showConfirmButton: false
+                    // Call your data service to delete the station
+                    ChartInfoDataService.deleteChartInfo(id)
+                        .then(() => {
+                            // ✅ SUCCESS PATH: This block only runs if the API returns a 2xx status code.
+                            this.refreshChartInfo();
+                            Swal.fire({
+                                icon: "success",
+                                title: "Deleted!",
+                                text: "ChartInfo deleted successfully.",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        })
+                        .catch(err => {
+                            // 🛑 ERROR PATH: This block runs for any 4xx or 5xx status code.
+
+                            // Check if the error response and data exist, and if the status is 400
+                            if (err.response && err.response.status === 400 && err.response.data) {
+                                // This is our specific business logic error from the backend.
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Deletion Failed',
+                                    // Display the specific message sent from the API
+                                    text: err.response.data.message,
+                                });
+                            } else {
+                                // This is for all other types of errors (network, server crash, etc.)
+                                console.error("An unexpected error occurred during deletion:", err);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'An Error Occurred',
+                                    text: 'The ChartInfo could not be deleted. Please try again later.',
+                                });
+                            }
                         });
-                    });
                 }
             });
         }
@@ -130,3 +188,20 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.chart-image-thumbnail {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    /* This makes the image cover the area without stretching */
+    border-radius: 5px;
+    /* Optional: adds rounded corners */
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+    /* Aligns content vertically in the middle of table cells */
+}
+</style>

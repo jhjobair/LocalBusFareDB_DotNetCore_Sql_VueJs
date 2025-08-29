@@ -110,9 +110,9 @@ namespace WebApi.Services
             {
                 return "fareChart with the email '" + model.Id + "' already exists";
             }
-            if (_context.FareChart.Any(x =>
-                 (x.FromStationId == model.FromStationId && x.ToStationId == model.ToStationId) ||
-                 (x.FromStationId == model.ToStationId && x.ToStationId == model.FromStationId)))
+            bool isStationChanged = ((fareChart.FromStationId == model.FromStationId) && (fareChart.ToStationId == model.ToStationId));
+            bool isExist = _context.FareChart.Any(x => (x.FromStationId == model.FromStationId && x.ToStationId == model.ToStationId) || (x.FromStationId == model.ToStationId && x.ToStationId == model.FromStationId));
+            if (!isStationChanged && isExist)
             {
                 return $"A fare chart between station {model.FromStationId} and {model.ToStationId} already exists.";
             }

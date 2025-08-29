@@ -99,31 +99,56 @@ export default {
         updateStation(id) {
             this.$router.push(`/station/${id}`);
         },
-        deleteStation(id) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Do you want to delete this Station?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    StationsDataService.deleteStation(id).then(() => {
-                        this.refreshStations();
-                        Swal.fire({
-                            icon: "success",
-                            title: "Deleted!",
-                            text: "Station deleted successfully.",
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+       deleteStation(id) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete this Station?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Call your data service to delete the station
+            StationsDataService.deleteStation(id)
+                .then(() => {
+                    // ✅ SUCCESS PATH: This block only runs if the API returns a 2xx status code.
+                    this.refreshStations();
+                    Swal.fire({
+                        icon: "success",
+                        title: "Deleted!",
+                        text: "Station deleted successfully.",
+                        timer: 2000,
+                        showConfirmButton: false
                     });
-                }
-            });
-        },
+                })
+                .catch(err => {
+                    // 🛑 ERROR PATH: This block runs for any 4xx or 5xx status code.
+                    
+                    // Check if the error response and data exist, and if the status is 400
+                    if (err.response && err.response.status === 400 && err.response.data) {
+                        // This is our specific business logic error from the backend.
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Deletion Failed',
+                            // Display the specific message sent from the API
+                            text: err.response.data.message, 
+                        });
+                    } else {
+                        // This is for all other types of errors (network, server crash, etc.)
+                        console.error("An unexpected error occurred during deletion:", err);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'An Error Occurred',
+                            text: 'The station could not be deleted. Please try again later.',
+                        });
+                    }
+                });
+        }
+    });
+}
        
     },
     created() {

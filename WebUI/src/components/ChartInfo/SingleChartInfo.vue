@@ -27,9 +27,15 @@
                 </div>
 
                 <!-- Chart Path -->
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Chart Path</label>
-                    <input type="text" class="form-control" v-model="chartPath" placeholder="Enter chart path" />
+                 <div class="mb-3">
+                    <label class="form-label fw-bold">Chart Image</label>
+                    <input type="file" class="form-control" @change="onFileSelected" accept="image/*" />
+                </div>
+                 <div v-if="imagePreviewUrl" class="mb-3">
+                    <label class="form-label fw-bold">Preview</label>
+                    <div>
+                        <img :src="imagePreviewUrl" class="img-thumbnail" alt="Preview" style="max-width: 200px;" />
+                    </div>
                 </div>
                 <!-- Save & Cancel Buttons -->
                 <div class="row">
@@ -62,7 +68,11 @@ export default {
             chartName: "",
             chartCode: "",
             chartPath: "",
+                chartImageBase64: null,
+            // 🟢 NEW: To display the existing image from server or the new preview
+            imagePreviewUrl: null,
             errors: [],
+               apiBaseUrl: "http://localhost:9080", 
         };
     },
     computed: {
@@ -71,13 +81,41 @@ export default {
         },
     },
     methods: {
+         getImageUrl(relativePath) {
+            if (!relativePath) return '';
+            // This combines your base URL and the relative path from the database
+            // Example: "http://localhost:9080" + "/images/charts/3eab8d45....png"
+            return `${this.apiBaseUrl}${relativePath}`;
+        },
         refreshChartDetails() {
             ChartInfoDataService.retrieveChartInfo(this.id).then((res) => {
                 this.chartName = res.data.chartName;
                 this.chartCode = res.data.chartCode;
-                this.chartPath = res.data.chartPath;
+                 this.imagePreviewUrl = this.getImageUrl(res.data.chartPath);
             });
         },
+         onFileSelected(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                this.chartImageBase64 = null;
+                this.imagePreviewUrl = null; // Or revert to existing image if editing
+                return;
+            }
+
+            // Use FileReader to convert image to a Base64 string
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                // The result is the Base64 Data URL (e.g., "data:image/png;base64,iVBORw...")
+                this.chartImageBase64 = reader.result;
+                this.imagePreviewUrl = reader.result;
+            };
+            reader.onerror = (error) => {
+                console.error("Error converting file to Base64:", error);
+                this.errors.push("Failed to read the image file.");
+            };
+        },
+
         cancelForm() {
             this.$router.push("/ChartAllinfo");
         },
@@ -94,17 +132,16 @@ export default {
             } else if (this.chartCode.length < 2) {
                 this.errors.push("Enter atleast 2 characters in ChartCode");
             }
-            if (!this.chartPath) {
-                this.errors.push("Enter valid chartPath");
-            } else if (this.chartPath.length < 2) {
-                this.errors.push("Enter atleast 2 characters in chartPath");
+             // 🟢 Validate that an image was selected when creating
+            if (this.id == -1 && !this.chartImageBase64) {
+                this.errors.push("Please select an image file.");
             }
             if (this.errors.length === 0) {
                 if (this.id == -1) {
                     ChartInfoDataService.createChartInfo({
                         chartName: this.chartName,
                         chartCode: this.chartCode,
-                        chartPath: this.chartPath,
+                       chartPath: this.chartImageBase64
                     }).then(() => {
                         this.$router.push("/ChartAllinfo");
                     }, err => {
@@ -132,7 +169,7 @@ export default {
                                     id: this.id,
                                     chartName: this.chartName,
                                     chartCode: this.chartCode,
-                                    chartPath: this.chartPath,
+                                    chartPath: this.chartImageBase64,
                                 })
                                 .then(() => {
                                     Swal.fire({
