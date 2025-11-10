@@ -1,7 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using System.Text.Json.Serialization;
 using WebApi.Helpers;
+using WebApi.Interface;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +18,22 @@ var builder = WebApplication.CreateBuilder(args);
     // SQL Server connection
     services.AddDbContext<DataContext>(options =>
         options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["AppSettings:Audience"],
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)),
+            ValidateIssuerSigningKey = true
+        };
+    });
+    builder.Services.AddScoped<IAuthService, AuthService>();
 
     // CORS
     services.AddCors();
