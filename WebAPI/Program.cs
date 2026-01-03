@@ -36,7 +36,17 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IAuthService, AuthService>();
 
     // CORS
-    services.AddCors();
+    services.AddCors(options =>
+    {
+        options.AddPolicy("*",
+            policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
 
     // Controllers with JSON options
     services.AddControllers().AddJsonOptions(x =>

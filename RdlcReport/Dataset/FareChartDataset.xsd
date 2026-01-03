@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FareChartDataset" targetNamespace="http://tempuri.org/FareChartDataset.xsd" xmlns:mstns="http://tempuri.org/FareChartDataset.xsd" xmlns="http://tempuri.org/FareChartDataset.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="FareChartDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="FareChartDataset" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="FareChartDataset">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="FareDto" msprop:Generator_RowEvHandlerName="FareDtoRowChangeEventHandler" msprop:Generator_RowDeletedName="FareDtoRowDeleted" msprop:Generator_RowDeletingName="FareDtoRowDeleting" msprop:Generator_RowEvArgName="FareDtoRowChangeEvent" msprop:Generator_TablePropName="FareDto" msprop:Generator_RowChangedName="FareDtoRowChanged" msprop:Generator_UserTableName="FareDto" msprop:Generator_RowChangingName="FareDtoRowChanging" msprop:Generator_RowClassName="FareDtoRow" msprop:Generator_TableClassName="FareDtoDataTable" msprop:Generator_TableVarName="tableFareDto">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_UserColumnName="Id" msprop:Generator_ColumnVarNameInTable="columnId" type="xs:string" minOccurs="0" />
+              <xs:element name="FromStationName" msprop:Generator_ColumnPropNameInTable="FromStationNameColumn" msprop:Generator_ColumnPropNameInRow="FromStationName" msprop:Generator_UserColumnName="FromStationName" msprop:Generator_ColumnVarNameInTable="columnFromStationName" type="xs:string" minOccurs="0" />
+              <xs:element name="ToStationName" msprop:Generator_ColumnPropNameInRow="ToStationName" msprop:Generator_ColumnPropNameInTable="ToStationNameColumn" msprop:Generator_ColumnVarNameInTable="columnToStationName" msprop:Generator_UserColumnName="ToStationName" type="xs:string" minOccurs="0" />
+              <xs:element name="Distance" msprop:Generator_ColumnPropNameInRow="Distance" msprop:Generator_ColumnPropNameInTable="DistanceColumn" msprop:Generator_ColumnVarNameInTable="columnDistance" msprop:Generator_UserColumnName="Distance" type="xs:string" minOccurs="0" />
+              <xs:element name="Fare" msprop:Generator_ColumnPropNameInRow="Fare" msprop:Generator_ColumnPropNameInTable="FareColumn" msprop:Generator_ColumnVarNameInTable="columnFare" msprop:Generator_UserColumnName="Fare" type="xs:string" minOccurs="0" />
+              <xs:element name="ChartName" msprop:Generator_ColumnPropNameInRow="ChartName" msprop:Generator_ColumnPropNameInTable="ChartNameColumn" msprop:Generator_ColumnVarNameInTable="columnChartName" msprop:Generator_UserColumnName="ChartName" type="xs:string" minOccurs="0" />
+              <xs:element name="ChartCode" msprop:Generator_ColumnPropNameInRow="ChartCode" msprop:Generator_ColumnPropNameInTable="ChartCodeColumn" msprop:Generator_ColumnVarNameInTable="columnChartCode" msprop:Generator_UserColumnName="ChartCode" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi.csproj", "{ED729075-1A15-412D-8835-69A3B0477BEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RdlcReport", "..\RdlcReport\RdlcReport.csproj", "{1C0CC9DF-6FF6-4A03-BD06-E4480B238A06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{ED729075-1A15-412D-8835-69A3B0477BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED729075-1A15-412D-8835-69A3B0477BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED729075-1A15-412D-8835-69A3B0477BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C0CC9DF-6FF6-4A03-BD06-E4480B238A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C0CC9DF-6FF6-4A03-BD06-E4480B238A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C0CC9DF-6FF6-4A03-BD06-E4480B238A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C0CC9DF-6FF6-4A03-BD06-E4480B238A06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72218658-2408-4FE6-94E8-A077F227421F}
 	EndGlobalSection
 EndGlobal
