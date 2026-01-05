@@ -2,6 +2,9 @@
     <div class="container">
       <h3>All Users</h3>
       <div v-if="message" class="alert alert-success">{{ this.message }}</div>
+      <div class="mb-3">
+        <button @click="callApi" class="btn btn-primary mt-2">Call API</button>
+      </div>
       <div class="container">
         <table class="table">
           <thead>
@@ -64,6 +67,13 @@
         UserDataService.deleteUser(id).then(() => {
           this.refreshUsers();
         });
+      },
+      callApi() {
+        UserDataService.reportUser().then(res => {
+            this.message = `User: ${res.data.firstName} ${res.data.lastName}`;
+          }).catch(() => {
+            this.message = 'User not found';
+          });
       },
     },
     created() {

@@ -22,5 +22,20 @@ class UserDataService {
     createUser(user) {
         return axios.post(`${API_URL}/users`, user);
     }
+    reportUser() {
+              axios.get("http://localhost:9080/api/v1/report/RDLCReport", {
+        params: {
+          reportType: "pdf",
+          fromStationId: 1,
+          toStationId: 2
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
   }
 export default new UserDataService()

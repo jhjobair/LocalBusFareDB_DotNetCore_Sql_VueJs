@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Interface;
 using WebApi.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApi.Controllers
 {
@@ -37,7 +38,7 @@ namespace WebApi.Controllers
             {
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-       
+               
 
 
                 // 2. Get RDLC file path
@@ -55,6 +56,10 @@ namespace WebApi.Controllers
 
                 // 5. Add Data Sources (names must match RDLC dataset names)
                 var data = _fareChartService.GetByStations(fromStationId, toStationId);
+                if (data == null)
+                {
+                    return NotFound("No fare chart found for selected stations.");
+                }
                 report.AddDataSource("Dataset1", data);
 
                 if (reportType == "pdf") // Click pdf button 

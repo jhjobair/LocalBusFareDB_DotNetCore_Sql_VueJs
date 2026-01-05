@@ -20,12 +20,12 @@ namespace WebApi.Entities
     public class FareChartViewModel
     {
         public int Id { get; set; }
-        public string FromStationName { get; set; }
-        public string ToStationName { get; set; }
+        public string FromStationName { get; set; } = string.Empty;
+        public string ToStationName { get; set; } = string.Empty;
         public decimal Distance { get; set; }
         public decimal Fare { get; set; }
-        public string ChartName { get; set; }
-        public string ChartCode { get; set; }
+        public string ChartName { get; set; } = string.Empty;
+        public string ChartCode { get; set; } = string.Empty;
 
         public int FromStationId { get; set; }
         public int ToStationId { get; set; }

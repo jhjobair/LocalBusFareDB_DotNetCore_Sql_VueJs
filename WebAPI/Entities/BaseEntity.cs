@@ -4,10 +4,10 @@
     {
         public int Id { get; set; } 
         public DateTime EntryDate { get; set; }
-        public string EntryBy { get; set; }
+        public string EntryBy { get; set; } = string.Empty;
 
-        public DateTime UpdateDate { get; set; }
-        public string UpdateBy { get; set; }
-        public string Status { get; set; }
+        public DateTime UpdateDate { get; set; } 
+        public string UpdateBy { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
     }
 }
