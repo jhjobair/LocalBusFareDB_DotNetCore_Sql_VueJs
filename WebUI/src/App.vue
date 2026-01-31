@@ -5,28 +5,34 @@
       <a class="navbar-brand" href="#">
         Local Bus Fare Chart
       </a>
-     <button @click="toggleTheme" class="theme-toggle-btn">
-      <span v-if="theme === 'light'">🌙</span>
-      <span v-else>☀️</span>
-    </button>
+      <div class="navbar-actions">
+        <!-- 🔓 Show Logout only if logged in -->
+        <button v-if="isLoggedIn" @click="handleLogout" class="logout-btn">
+          Logout 🚪
+        </button>
 
+        <button @click="toggleTheme" class="theme-toggle-btn">
+          <span v-if="theme === 'light'">🌙</span>
+          <span v-else>☀️</span>
+        </button>
+      </div>
     </div>
 
     <div class="layout">
-      <!-- Sidebar -->
-      <aside class="sidebar">
+      <!-- ⬅️ Sidebar: Only show if logged in -->
+      <aside v-if="isLoggedIn" class="sidebar">
         <ul>
           <li><router-link to="/">Dashboard</router-link></li>
           <li><router-link to="/Stations">Stations</router-link></li>
           <li><router-link to="/ChartAllinfo">Chart info</router-link></li>
           <li><router-link to="/farechart">Fare Chart</router-link></li>
           <li><router-link to="/farechart/final">FinalView</router-link></li>
-          <!-- <li><router-link to="/settings">Settings</router-link></li> -->
         </ul>
       </aside>
 
-      <!-- Main Content -->
-      <main class="content">
+      <!-- ➡️ Main Content -->
+      <!-- If logged out, this will take up full width for Login/Register pages -->
+      <main class="content" :class="{ 'full-width': !isLoggedIn }">
         <router-view />
       </main>
     </div>
@@ -34,18 +40,33 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-
-import "vue-multiselect/dist/vue-multiselect.css"; // <-- CSS here
+import { ref, onMounted, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import "vue-multiselect/dist/vue-multiselect.css";
 
 export default {
   name: "App",
   setup() {
     const theme = ref("light");
+    const isLoggedIn = ref(false);
+    const router = useRouter();
+    const route = useRoute();
+
+    // Function to check if user is logged in
+    const checkAuth = () => {
+      isLoggedIn.value = !!localStorage.getItem("userToken");
+    };
 
     onMounted(() => {
       theme.value = localStorage.getItem("theme") || "light";
       document.body.className = theme.value;
+      checkAuth();
+    });
+
+    // Watch the route: every time the page changes, re-check if we are logged in
+    // This ensures the sidebar appears/disappears immediately after login/logout
+    watch(() => route.path, () => {
+      checkAuth();
     });
 
     const toggleTheme = () => {
@@ -54,7 +75,18 @@ export default {
       localStorage.setItem("theme", theme.value);
     };
 
-    return { theme, toggleTheme };
+    const handleLogout = () => {
+      localStorage.removeItem("userToken");
+      isLoggedIn.value = false;
+      router.push("/login");
+    };
+
+    return { 
+      theme, 
+      toggleTheme, 
+      isLoggedIn, 
+      handleLogout 
+    };
   },
 };
 </script>
@@ -313,7 +345,7 @@ button:hover {
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
-  color: white;
+  color: rgb(44, 16, 16);
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
@@ -353,6 +385,64 @@ button:hover {
   padding: 10px;
   border-radius: 6px;
   margin-bottom: 10px;
+}
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-btn {
+  background: #dc3545; /* Red color for logout */
+  font-size: 14px;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+/* Make content full width when sidebar is hidden */
+.full-width {
+  width: 100%;
+}
+
+.btn-glass {
+  /* Light mode - white glass */
+  background: rgba(90, 132, 196, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: #000;
+  font-weight: 500;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(31, 38, 135, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Dark mode - dark glass with white text */
+.dark .btn-glass {
+  background: rgba(115, 152, 228, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dark .btn-glass:hover {
+  background: rgba(4, 101, 56, 0.6);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 </style>
 

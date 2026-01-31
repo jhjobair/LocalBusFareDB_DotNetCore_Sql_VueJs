@@ -1,20 +1,24 @@
-﻿using WebApi.Interface;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Crypto.Generators;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using WebApi.Entities;
 using WebApi.Helpers;
+using WebApi.Interface;
 using WebApi.Models.jwtToken;
+using ResetPasswordRequest = Microsoft.AspNetCore.Identity.Data.ResetPasswordRequest;
 
 
 namespace WebApi.Services
 {
-    public class AuthService(DataContext context, IConfiguration configuration) : IAuthService
+    public class AuthService(DataContext context, IConfiguration configuration, IEmailService emailService) : IAuthService
     {
+
         public async Task<TokenResponseDto?> LoginAsync(UserDto request)
         {
             var user = await context.AuthUser.FirstOrDefaultAsync(u => u.Username == request.Username);
@@ -52,6 +56,7 @@ namespace WebApi.Services
                 .HashPassword(user, request.Password);
 
             user.Username = request.Username;
+            user.Email = request.Email;
             user.PasswordHash = hashedPassword;
 
             context.AuthUser.Add(user);
@@ -122,5 +127,60 @@ namespace WebApi.Services
 
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
+        public async Task<bool> ForgotPassword(string email)
+        {
+            var user = await context.AuthUser.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null) return false;
+
+            var code = new Random().Next(100000, 999999).ToString();
+            user.VerificationCode = code;
+            user.CodeExpires = DateTime.UtcNow.AddMinutes(15);
+
+            try
+            {
+                await context.SaveChangesAsync();
+
+                string subject = "Your Password Reset Code";
+                string body = $"<h1>Code: {code}</h1>";
+
+                // Try to send the email
+                await emailService.SendEmailAsync(email, subject, body);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // If email fails, we log it and throw an error so the frontend knows
+                // Log ex.Message somewhere if you have logging
+                throw new AppException("Failed to send email. Please check your SMTP settings or App Password.");
+            }
+        }
+
+        public async Task<bool> ResetPassword(ResetPasswordRequest request)
+        {
+            // 1. Find user by email
+            var user = await context.AuthUser.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            // 2. Validate user existence, the code match, and that it hasn't expired
+            if (user == null ||
+                user.VerificationCode != request.ResetCode ||
+                user.CodeExpires < DateTime.UtcNow)
+            {
+                // Using your project's AppException helper
+                throw new AppException("The verification code is invalid or has expired.");
+            }
+
+            // 3. Hash the new password (Assuming BCrypt is used based on typical WebApi setups)
+            var passwordHasher = new PasswordHasher<AuthUser>();
+            user.PasswordHash = passwordHasher.HashPassword(user, request.NewPassword);
+
+            // 4. Clear the verification fields so the code cannot be used again
+            user.VerificationCode = null;
+            user.CodeExpires = null;
+
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+
     }
 }

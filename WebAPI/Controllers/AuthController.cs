@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Entities;
+using WebApi.Helpers;
 using WebApi.Interface;
 using WebApi.Models.jwtToken;
 
@@ -35,6 +36,7 @@ namespace WebApi.Controllers
         }
 
 
+
         //[AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto request)
@@ -59,5 +61,46 @@ namespace WebApi.Controllers
         {
             return Ok("You are and admin!");
         }
+
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
+        {
+            var result = await authService.ForgotPassword(model.Email);
+
+            // For security, we usually return 200 even if the email isn't found
+            // but here we return a specific message for your testing
+            if (!result)
+                return BadRequest(new { message = "Email not found." });
+
+            return Ok(new { message = "A verification code has been sent to your email." });
+        }
+
+        // 2. Reset Password Endpoint
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] Microsoft.AspNetCore.Identity.Data.ResetPasswordRequest request)
+        {
+            try
+            {
+                await authService.ResetPassword(request);
+                return Ok(new { message = "Your password has been reset successfully." });
+            }
+            catch (AppException ex)
+            {
+                // Catches the 'Invalid or expired code' error from AuthService
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while resetting your password." });
+            }
+        }
+    }
+
+    // Small helper DTO for the Forgot Password step
+    public class ForgotPasswordRequest
+    {
+        public string Email { get; set; } = string.Empty;
     }
 }
+

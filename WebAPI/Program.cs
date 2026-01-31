@@ -7,13 +7,22 @@ using System.Text.Json.Serialization;
 using WebApi.Helpers;
 using WebApi.Interface;
 using WebApi.Services;
+using WebApi.Models.jwtToken;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 {
+    Environment.SetEnvironmentVariable(
+        "REPORTING_VBC_PATH",
+        @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\vbc.exe",
+        EnvironmentVariableTarget.Process
+    );
+
     var services = builder.Services;
     var configuration = builder.Configuration;
+    System.Text.Encoding.RegisterProvider(
+    System.Text.CodePagesEncodingProvider.Instance);
 
     // SQL Server connection
     services.AddDbContext<DataContext>(options =>
@@ -33,7 +42,14 @@ var builder = WebApplication.CreateBuilder(args);
             ValidateIssuerSigningKey = true
         };
     });
+    // This line maps the "SmtpSettings" section from appsettings.json to the SmtpSettings class
+
+
+    builder.Services.AddScoped<IEmailService, EmailService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+
+
+    builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
     // CORS
     services.AddCors(options =>
@@ -93,6 +109,7 @@ var app = builder.Build();
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Web API v1");
         c.RoutePrefix = string.Empty; // Swagger UI at root URL
     });
+
     app.UseStaticFiles();
     app.MapControllers();
 }

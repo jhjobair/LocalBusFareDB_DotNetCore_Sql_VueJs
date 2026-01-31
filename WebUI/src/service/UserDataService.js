@@ -23,11 +23,11 @@ class UserDataService {
         return axios.post(`${API_URL}/users`, user);
     }
     reportUser() {
-              axios.get("http://localhost:9080/api/v1/report/RDLCReport", {
+             return axios.get("http://localhost:9080/api/v1/report/RDLCReport", {
         params: {
           reportType: "pdf",
-          fromStationId: 1,
-          toStationId: 2
+          fromStationId: 10,
+          toStationId: 13
         }
       })
       .then(response => {
