@@ -88,6 +88,21 @@ Once the backend is running, you can access the interactive **Swagger UI** at:
 `http://localhost:9080/swagger`
 
 ---
+<img width="1869" height="899" alt="Screenshot_10" src="https://github.com/user-attachments/assets/2f43eb02-20e0-4678-bc97-ee3bd9ab3e9e" />
+
+<img width="1918" height="918" alt="Screenshot_2" src="https://github.com/user-attachments/assets/7e77c4ca-fb7a-4e2e-9797-5b9fc52dd45e" />
+
+<img width="1905" height="920" alt="Screenshot_1" src="https://github.com/user-attachments/assets/82a8b1e4-ec31-4304-b528-7715ad9589a8" />
+<img width="1908" height="908" alt="Screenshot_3" src="https://github.com/user-attachments/assets/e01a8d85-8ac0-450d-8ed3-37cf20688756" />
+
+<img width="1891" height="905" alt="Screenshot_4" src="https://github.com/user-attachments/assets/16039e64-d21d-4bcf-9aca-0d62cce7e74f" />
+
+<img width="1880" height="920" alt="Screenshot_9" src="https://github.com/user-attachments/assets/fedcd817-4605-48d0-824a-b73ee5c2aec2" />
+<img width="888" height="628" alt="Screenshot_8" src="https://github.com/user-attachments/assets/afca1a49-e133-4f42-8d1d-a2c6651d3a4e" />
+
+<img width="1894" height="916" alt="Screenshot_7" src="https://github.com/user-attachments/assets/20f134d2-ed7c-4773-829d-2c8c45dbee5e" />
+
+
 
 ## 📝 License
 Distributed under the MIT License. See `LICENSE` for more information.
