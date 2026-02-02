@@ -3,6 +3,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
   	        <Nullable>enable</Nullable>
+  	        <UserSecretsId>f1381219-b484-41a6-a5f0-4e9d8710d8c5</UserSecretsId>
     </PropertyGroup>
     <ItemGroup>
       <Content Remove="wwwroot\Report\FareChartReport.rdlc" />
