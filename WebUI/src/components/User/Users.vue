@@ -2,9 +2,6 @@
     <div class="container">
       <h3>All Users</h3>
       <div v-if="message" class="alert alert-success">{{ this.message }}</div>
-      <div class="mb-3">
-        <button @click="generateReport" class="btn btn-primary mt-2">Generate Report</button>
-      </div>
       <div class="container">
         <table class="table">
           <thead>
@@ -68,21 +65,7 @@
           this.refreshUsers();
         });
       },
-     async generateReport() {
-    try {
-        const response = await UserDataService.downloadUserReport();
-        
-        // Create a link to the PDF file
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'UserReport.pdf'); // Sets the file name
-        document.body.appendChild(link);
-        link.click();
-    } catch (error) {
-        console.error("Report generation failed", error);
-    }
-}
+     
 
 
     },

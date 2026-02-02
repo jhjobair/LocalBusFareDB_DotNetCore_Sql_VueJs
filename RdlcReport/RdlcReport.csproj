@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WebAPI\WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Dataset\FareChartDataset.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

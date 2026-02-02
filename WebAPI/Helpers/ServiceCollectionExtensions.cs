@@ -12,6 +12,8 @@ namespace WebApi.Helpers
             services.AddScoped<IStationsService, StationsService>();
             services.AddScoped<IChartInfoService, ChartInfoService>();
             services.AddScoped<IFareChartService, FareChartService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

@@ -110,14 +110,14 @@ namespace WebApi.Controllers
     public class ReportController(IFareChartService fareChartService, IWebHostEnvironment env) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> FullFareChartReport(string reportType = "pdf")
+        public async Task<IActionResult> FullFareChartReport(string reportType)
         {
             try
             {
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
                 // 1. Path to your RDLC
-                string reportPath = Path.Combine(env.WebRootPath, "Report", "UserReport.rdlc");
+                string reportPath = Path.Combine(env.WebRootPath, "Report", "FareChartReport.rdlc");
 
                 if (!System.IO.File.Exists(reportPath))
                     return NotFound("Report template not found.");

@@ -45,8 +45,7 @@ var builder = WebApplication.CreateBuilder(args);
     // This line maps the "SmtpSettings" section from appsettings.json to the SmtpSettings class
 
 
-    builder.Services.AddScoped<IEmailService, EmailService>();
-    builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 
     builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
