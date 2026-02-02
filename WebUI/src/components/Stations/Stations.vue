@@ -53,15 +53,25 @@
             </tr>
         </tbody>
     </table>
-
+<div class="report-actions">
+    <button @click="downloadReport('pdf')" class="btn btn-success mr-2">
+      <i class="fa fa-file-pdf"></i> Download PDF
+    </button>
+    
+    <button @click="downloadReport('excel')" class="btn btn-success mr-2">
+      <i class="fa fa-file-excel"></i> Download Excel
+    </button>
+  </div>
 </div>
 </template>
 
   
 <script>
 import StationsDataService from "../../service/StationsDataService";
+import reportService from "../../service/ReportDataService";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+
 
 export default {
     name: "Stations",
@@ -148,8 +158,40 @@ export default {
                 });
         }
     });
-}
-       
+},
+       async downloadReport(type) {
+      try {
+        // 1. Call the service
+        const response = await reportService.getFullStationReport(type);
+
+        // 2. Create a Blob from the response data
+        const blob = new Blob([response.data], { 
+          type: type === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+        });
+
+        // 3. Generate a temporary URL for the file
+        const url = window.URL.createObjectURL(blob);
+        
+        // 4. Create a hidden <a> tag to trigger download
+        const link = document.createElement('a');
+        link.href = url;
+        
+        const extension = type === 'pdf' ? 'pdf' : 'xlsx';
+        link.setAttribute('download', `Stations_Report_${new Date().getTime()}.${extension}`);
+        
+        // 5. Append to body, click, and remove
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up the memory
+        window.URL.revokeObjectURL(url);
+
+      } catch (error) {
+        console.error("Report Download Error:", error);
+        alert("Failed to generate report. Please check if the backend is running.");
+      }
+    }
     },
     created() {
         this.refreshStations();

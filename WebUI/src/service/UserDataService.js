@@ -22,27 +22,8 @@ class UserDataService {
     createUser(user) {
         return axios.post(`${API_URL}/users`, user);
     }
-    // reportUser() {
-    //          return axios.get("http://localhost:9080/api/v1/report/RDLCReport", {
-    //     params: {
-    //       reportType: "pdf",
-    //       fromStationId: 10,
-    //       toStationId: 13
-    //     }
-    //   })
-    //   .then(response => {
-    //     console.log(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
-    // }
+    
 
 
-    async downloadUserReport() {
-    return await axios.get('http://localhost:9080/api/Report/FullFareChartReport', {
-        responseType: 'blob', // Important: Tells axios to handle binary data (PDF)
-    });
-}
   }
 export default new UserDataService()

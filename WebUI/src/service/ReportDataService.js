@@ -12,5 +12,11 @@ export default {
       params: { reportType: reportType },
       responseType: 'blob', // CRITICAL: This allows handling binary file data
     });
+  },
+  async getFullStationReport(reportType = 'pdf') {
+    return await axios.get(`${API_URL}/StationsReport`, {
+      params: { reportType: reportType },
+      responseType: 'blob', // CRITICAL: This allows handling binary file data
+    });
   }
 };

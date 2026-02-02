@@ -107,7 +107,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]/[action]")]
-    public class ReportController(IFareChartService fareChartService, IWebHostEnvironment env) : ControllerBase
+    public class ReportController(IFareChartService fareChartService, IWebHostEnvironment env,IStationsService stationService) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> FullFareChartReport(string reportType)
@@ -159,6 +159,68 @@ namespace WebApi.Controllers
                 {
                   
                     
+                    reportBytes = report.Render("PDF");
+                    mimeType = "application/pdf";
+                    fileName += ".pdf";
+                }
+
+                return File(reportBytes, mimeType, fileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> StationsReport(string reportType)
+        {
+            try
+            {
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+                // 1. Path to your RDLC
+                string reportPath = Path.Combine(env.WebRootPath, "Report", "StationsReport.rdlc");
+
+                if (!System.IO.File.Exists(reportPath))
+                    return NotFound("Report template not found.");
+
+                // 2. Fetch ALL data from the service
+                // Using .GetAll() to get the full table
+                var data = stationService.GetAll();
+
+                if (data == null || !data.Any())
+                    return NotFound("No data available to generate report.");
+
+                // 3. Initialize Report
+                LocalReport report = new LocalReport();
+                report.ReportPath = reportPath;
+
+                // 4. Add the full list to the DataSource
+                // Note: "DataSet1" must match your RDLC Dataset name exactly
+                report.DataSources.Add(new ReportDataSource("stationsDataSet", data));
+
+                ReportParameter[] parameters = new ReportParameter[]
+                    {
+                     new ReportParameter("CreatedBy", "jobair")
+                    };
+
+                // 2. Set the parameters to the report
+                report.SetParameters(parameters);
+                // 5. Render
+                byte[] reportBytes;
+                string mimeType;
+                string fileName = $"FullFareChart_{DateTime.Now:yyyyMMdd}";
+
+                if (reportType.ToLower() == "excel")
+                {
+                    reportBytes = report.Render("EXCELOPENXML");
+                    mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName += ".xlsx";
+                }
+                else
+                {
+
+
                     reportBytes = report.Render("PDF");
                     mimeType = "application/pdf";
                     fileName += ".pdf";

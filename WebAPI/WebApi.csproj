@@ -7,6 +7,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Content Remove="wwwroot\Report\FareChartReport.rdlc" />
+      <Content Remove="wwwroot\Report\StationsReport.rdlc" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
@@ -31,5 +32,6 @@
     </ItemGroup>
     <ItemGroup>
       <None Include="wwwroot\Report\FareChartReport.rdlc" />
+      <None Include="wwwroot\Report\StationsReport.rdlc" />
     </ItemGroup>
 </Project>
